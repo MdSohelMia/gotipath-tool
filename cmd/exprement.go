@@ -4,8 +4,9 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"log"
+	"os"
 
+	"github.com/MdSohelMia/gotipath-tool/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		exprement()
+		var path string
+
+		if len(args) == 1 {
+			path = args[0]
+		} else {
+			p, _ := os.Getwd()
+			path = p
+		}
+		internal.LargeFileCount(path)
 	},
 }
 
@@ -36,30 +45,4 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// exprementCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-type Data int
-type Squar int
-type Resualt int
-
-func exprement() {
-	source := []string{"foo", "bar", "bax"}
-	outputChannel, _ := producer(source)
-	sink(outputChannel)
-}
-
-func producer(strings []string) (<-chan string, error) {
-	outChannel := make(chan string)
-
-	for _, s := range strings {
-		outChannel <- s
-	}
-
-	return outChannel, nil
-}
-
-func sink(values <-chan string) {
-	for value := range values {
-		log.Println(value)
-	}
 }
